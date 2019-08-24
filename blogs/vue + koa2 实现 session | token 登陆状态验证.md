@@ -1,7 +1,7 @@
 ---
 title: vue + koa2 实现 session | token 登陆状态验证
 date: 2019-08-24 01:30
-tags: [面试, Javascript]
+tags: [vue, koa, session, token]
 ---
 
 # Session 登陆与 Token 登陆的区别
