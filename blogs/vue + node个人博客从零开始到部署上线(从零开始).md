@@ -406,7 +406,22 @@ var setValue = function() {
 setValue();
 ```
 引入包 mysql，创建连接池 mysql.createPool，sql语法和在命令中使用的形同，拼成字符串即可，在 server 目录下运行 db.js 文件，刷新数据库
+
 ![添加数据](http://qiniu.cdn.cl8023.com/dbSetValue.jpg)
+
+如果这一步出现问题
+```cmd
+throw err: // Rethrow non-Mysql errors
+TypeError: Cannot read property 'query' of undefined
+```
+说明没连接上数据库，在确认数据库user、password无误的情况下，导致这个错误的原因是，目前，
+最新的mysql模块并未完全支持MySQL 8的“caching_sha2_password”加密方式，而“caching_sha2_password”在MySQL 8中是默认的加密方式。 
+ 
+**解决方法**是重新修改用户root的密码，并指定mysql模块能够支持的加密方式：
+```cmd
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+Query OK, 0 rows affected (0.12 sec)
+```
 
 同理可增删查改数据
 ```js
