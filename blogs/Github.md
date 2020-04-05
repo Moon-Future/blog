@@ -16,3 +16,35 @@ ssh-keygen -t rsa -C "youremail@example.com"
 第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：
 
 然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：
+
+
+# vultr
+/etc/shadowsocks-python
+
+### 更换端口-1：
+open tcp port  
+firewall-cmd --zone=public --add-port=8023/tcp --permanent
+
+open udp port  
+firewall-cmd --zone=public --add-port=8023/udp --permanent
+
+firewall-cmd --reload  
+reboot
+
+### 更换端口-2：
+vi /etc/shadowsocks.json
+
+启动：/etc/init.d/shadowsocks start  
+停止：/etc/init.d/shadowsocks stop  
+重启：/etc/init.d/shadowsocks restart  
+状态：/etc/init.d/shadowsocks status  
+
+
+### 安装
+- wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh
+
+- chmod +x shadowsocks.sh
+
+- ./shadowsocks.sh 2>&1 | tee shadowsocks.log
+
+- aes-256-cfb 7
