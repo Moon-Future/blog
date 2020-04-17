@@ -185,6 +185,81 @@ fn(1,2,3)
 
 ## CSS
 
+### 1、谈谈你对盒模型的认识
+
+#### 嗯~ o(*￣▽￣*)o
+盒模型有两种， W3C 标准盒模型和 IE 盒模型  
+1. W3C 标准盒模型包括 margin、border、padding、content，元素的宽度 width = content 的宽度
+2. IE 盒模型与 W3C 盒模型的唯一区别就是元素的宽度，元素的宽度 width = border + padding + content
+
+#### 什么是盒模型？
+每个元素被表示为一个矩形的盒子，由四部分组成：内容（content）、内边距（padding）、边框（border）、外边距（margin）。它在页面中所占的实际大小（宽高）是 content + padding + border + margin 之和。
+
+![盒模型](http://qiniu.cdn.cl8023.com/interview/box-sizing.png)
+
+```css
+box-sizng: content-box; // 浏览器默认，W3C 标准盒子模型，width、height 即内容的宽高，不包含 border、padding
+box-sizng: border-box; // IE 盒模型，width、height 包含 content、border、padding
+```
+
+#### W3C 标准盒模型
+![标准盒模型](http://qiniu.cdn.cl8023.com/interview/content-box.png)
+```css
+.box {
+	box-sizing: content-box;
+	width: 200px;
+	height: 200px;
+	padding: 20px;
+	border: 10px solid yellow;
+	margin: 5px;
+	background: red;
+}
+/* 
+    盒子宽高 260，260
+    内容宽高 200，200
+    盒子占据空间 270，270（加上 margin）
+    盒子的大小 260，260（不包含 margin） 
+*/
+```
+
+#### IE 盒模型
+![IE 盒模型](http://qiniu.cdn.cl8023.com/interview/border-box.png)
+```css
+.box {
+	box-sizing: border-box;
+	width: 200px;
+	height: 200px;
+	padding: 20px;
+	border: 10px solid yellow;
+	margin: 5px;
+	background: red;
+}
+/* 
+    盒子宽高 200，200
+    内容宽高 140，140
+    盒子占据空间 210，210（加上 margin）
+    盒子的大小 200，200（不包含 margin） 
+*/
+```
+
+### 2、什么是 BFC（Block Formatting Context）？
+
+#### 嗯~ o(*￣▽￣*)o
+BFC 称为块级格式化上下文，是 CSS 中的一种渲染机制。是一个拥有独立渲染区域的盒子(也可以理解为结界)，规定了内部元素如何布局，并且盒子内部元素与外部元素互不影响。
+
+如果一个元素具有 BFC，那么无论内部元素如何翻江倒海，它们都不会影响外部元素。因此，BFC 元素不可能有边距重叠，因为边距重叠会影响外部元素。BFC 元素也可以用于清除浮动的影响，因为如果不清除它们，子元素的浮动将导致父元素的高度崩溃，这将不可避免地影响后续元素的布局和位置，这很明显与 BFC 元素的子元素不会影响外部元素设置的事实相反。
+
+#### 如何触发 BFC？
+只要元素满足下面任一条件即可触发 BFC 特性：
+- body 根元素
+- 浮动元素：float 除 none 以外的值
+- 绝对定位元素：position (absolute、fixed)
+- display 为 inline-block、table-cells、flex
+- overflow 除了 visible 以外的值 (hidden、auto、scroll)
+
+#### BFC 有什么用？
+
+
 ## 前端工程化、模块化
 
 ## 性能优化
