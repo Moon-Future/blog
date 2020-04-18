@@ -260,8 +260,17 @@ BFC 称为块级格式化上下文，是 CSS 中的一种渲染机制。是一�
 - display 为 inline-block、table-cells、flex
 - overflow 除了 visible 以外的值 (hidden、auto、scroll)
 
+#### BFC 布局规则
+1. 内部的块级元素会在垂直方向，一个接一个地放置。
+2. Box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠
+3. 每个元素的 margin box 的左边， 与包含块 border box 的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。
+4. BFC 的区域不会与 float box 重叠。
+5. BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
+6. 计算 BFC 的高度时，浮动元素也参与计算
+
 #### BFC 有什么用？
 1. 清除元素内部浮动
+>根据BFC的规则计算BFC的高度时，浮动元素也参与计算
 2. 防止 margin 垂直重叠
 3. 
 

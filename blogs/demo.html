@@ -5,34 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style type="text/css">
-    .outer {
-      border: 5px dotted skyblue;
-      border-radius: 5px;
-      width: 400px;
-      padding: 10px;
-      margin-bottom: 40px;
+    .top {
+      width:100px;
+      height:100px;
+      background:blue;
+      opacity: 0.5;
+      margin-bottom: 30px;
     }
-
-    .float {
-      padding: 10px;
-      border: 5px solid rgba(214,129,137,.4);
-      border-radius: 5px;
-      background-color: rgba(233,78,119,.4);
-      color: #fff;
-      float: left;  
-      width: 200px;
-      margin: 0 20px 0 0;
+    .bottom {
+      width:100px;
+      height:100px;
+      background:red;
+      opacity: 0.5;
+      margin-top: -20px;
     }
   </style>
 </head>
 <body>
-  <div class="outer">
-    <div class="float">I am a floated element.</div>
-    I am text inside the outer box.
-    I am text inside the outer box.
-    I am text inside the outer box.
-    I am text inside the outer box.
-    I am text inside the outer box. 
-  </div>
+  <div class="top"></div>
+  <div class="bottom"></div>
 </body>
 </html>
