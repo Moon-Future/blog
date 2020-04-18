@@ -14,7 +14,7 @@ console.log(box) //1
 那么，我们可以这样理解：所谓的 BFC 是 css 的一个作用域？
 
 ## BFC 的产生
-由于 js 可以用过函数和其它方法实现块级作用域，css 也可以通过某种方式实现 BFC。  
+由于 js 可以使用函数和其它方法实现块级作用域，css 也可以通过某种方式实现 BFC。  
 BFC 官方文档有这样一段话：
 >Floats, absolutely positioned elements, block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, and block boxes with 'overflow' other than 'visible' (except when that value has been propagated to the viewport) establish new block formatting contexts for their contents.
 
@@ -27,10 +27,10 @@ BFC 官方文档有这样一段话：
 
 
 ## BFC 布局规则
-**1. 内部的块级元素会在垂直方向，一个接一个地放置。**
+**1. 内部的块级元素会在垂直方向，一个接一个地放置。**  
 正如每个块级元素在 body 根元素下都是占据一行，一个一个垂直方向排列。
 
-**2. Box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠**
+**2. Box 垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠**  
 ```html
 <style type="text/css">
   .top {
@@ -57,11 +57,43 @@ BFC 官方文档有这样一段话：
 - 两个相邻的外边距都是负数时，折叠结果是它们两者之间较小的值
 - 两个外边距一正一负时，折叠结果是两者的相加的和
 
-![边距重叠](http://qiniu.cdn.cl8023.com/BFC/BFC-1.jpg)
+![边距重叠-1](http://qiniu.cdn.cl8023.com/BFC/BFC-1.jpg)
+
+**防止垂直 margin 重叠**： 为解决边距重叠问题，只需要将 .top 或 .bottom 放在不同的 BFC 即可，我们这里将 .bottom 外再包裹一层容器，并将该容器产生一个 BFC
+```html
+<style type="text/css">
+  .top {
+    width:100px;
+    height:100px;
+    background:blue;
+    margin-bottom: 30px;
+  }
+  .bottom {
+    width:100px;
+    height:100px;
+    background:red;
+    margin-top: 20px;
+  }
+  .wrap {
+    overflow: auto;
+  }
+</style>
+<body>
+  <div class="top"></div>
+  <div class="wrap">
+    <div class="bottom"></div>
+  </div>
+</body>
+```
+
+![边距重叠-2](http://qiniu.cdn.cl8023.com/BFC/BFC-2.jpg)
+
+**3. 每个元素的 margin-left， 与包含块 border-left 相接触(对于从左往右的排版来说，否则相反)。即使存在浮动也是如此。**  
+
+![边距重叠-3](http://qiniu.cdn.cl8023.com/BFC/BFC-3.jpg)
+
+**4. BFC 的区域不会与 float box 重叠。**  
 
 
-
-**3. 每个元素的 margin box 的左边， 与包含块 border box 的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。**
-**4. BFC 的区域不会与 float box 重叠。**
 **5. BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。**
 **6. 计算 BFC 的高度时，浮动元素也参与计算**
