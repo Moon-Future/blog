@@ -27,6 +27,8 @@ BFC 官方文档有这样一段话：
 
 
 ## BFC 布局规则
+这里说的 Box 都是块级元素
+
 **1. 内部的块级元素会在垂直方向，一个接一个地放置。**  
 正如每个块级元素在 body 根元素下都是占据一行，一个一个垂直方向排列。
 
@@ -59,7 +61,7 @@ BFC 官方文档有这样一段话：
 
 ![边距重叠-1](http://qiniu.cdn.cl8023.com/BFC/BFC-1.jpg)
 
-**防止垂直 margin 重叠**： 为解决边距重叠问题，只需要将 .top 或 .bottom 放在不同的 BFC 即可，我们这里将 .bottom 外再包裹一层容器，并将该容器产生一个 BFC
+**【防止垂直 margin 重叠】** 为解决边距重叠问题，只需要将 .top 或 .bottom 放在不同的 BFC 即可，我们这里将 .bottom 外再包裹一层容器，并将该容器产生一个 BFC
 ```html
 <style type="text/css">
   .top {
@@ -88,12 +90,116 @@ BFC 官方文档有这样一段话：
 
 ![边距重叠-2](http://qiniu.cdn.cl8023.com/BFC/BFC-2.jpg)
 
-**3. 每个元素的 margin-left， 与包含块 border-left 相接触(对于从左往右的排版来说，否则相反)。即使存在浮动也是如此。**  
+**3. BFC 内部每个 Box 的 margin box 的左边， 与包含块 border box 的左边相接触(对于从左往右的排版来说，否则相反)。即使存在浮动也是如此。**  
 
 ![边距重叠-3](http://qiniu.cdn.cl8023.com/BFC/BFC-3.jpg)
 
-**4. BFC 的区域不会与 float box 重叠。**  
+如果给元素加浮动，并且没有清除浮动的话，父 Box 不会将内部浮动 Box 包裹，但还是在父 Box 的范围之内，左浮是子 Box 的左边接触父 Box 的 border box 的左边，右浮是子 Box 接触父 Box 的 border box 右边，除非设置 margin 来撑开距离，否则一直是这个规则。
 
+**4. BFC 的区域不会与 float box 重叠。**  
+```html
+<style type="text/css">
+  .aside {
+    width: 100px;
+    height: 100px;
+    background: blue;
+    float: left;
+  }
+  .main {
+    width: 200px;
+    height: 200px;
+    background: red;
+  }
+</style>
+<body>
+  <div class="aside"></div>
+  <div class="main"></div>
+</body>
+```
+
+![边距重叠-4](http://qiniu.cdn.cl8023.com/BFC/BFC-4.jpg)
+
+.aside 浮动后脱离包含块的文档流，与 .main 重叠。
+
+**【自适应两栏布局】** 将 .main 设置产生 BFC 后，.main 和 .aside 会分开，BFC 的区域不会与 float box 重叠。如果 .main 不设置宽度，将会自适应 body 的宽度，从而实现自适应两栏布局。
+```html
+<style type="text/css">
+  .aside {
+    width: 100px;
+    height: 100px;
+    background: blue;
+    float: left;
+  }
+  .main {
+    width: 200px;
+    height: 200px;
+    background: red;
+    overflow: auto;
+  }
+</style>
+<body>
+  <div class="aside"></div>
+  <div class="main"></div>
+</body>
+```
+
+![边距重叠-5](http://qiniu.cdn.cl8023.com/BFC/BFC-5.jpg)
+
+![边距重叠-6](http://qiniu.cdn.cl8023.com/BFC/BFC-6.gif)
 
 **5. BFC 就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。**
+- BFC 外部和内部的元素不会相互影响 ，所以 BFC 外部存在浮动时，不会影响其内部 Box 的布局，BFC 通过溢出隐藏不与浮动有重叠
+- 当 BFC 内部有浮动时，为不影响外部元素的布局，计算 BFC 高度时要考虑浮动元素的高度
+
 **6. 计算 BFC 的高度时，浮动元素也参与计算**
+```html
+<style type="text/css">
+  .wrap {
+    border: 2px solid blue;
+  }
+  .child {
+    width: 200px;
+    height: 200px;
+    background: red;
+    float: left;
+  }
+</style>
+<body>
+  <div class="wrap">
+    <div class="child"></div>
+  </div>
+</body>
+```
+
+![边距重叠-7](http://qiniu.cdn.cl8023.com/BFC/BFC-7.jpg)
+
+因为 .child 元素设置了 float，脱离文档流，并且其包含块不是 BFC，所以高度没有被撑开，只显示了包含块的上下边框。
+
+**【清除内部浮动】** 将父元素 .wrap 设置产生 BFC 后，因为计算 BFC 的高度时，浮动元素也参与计算，所以父元素高度被撑开。
+
+```html
+<style type="text/css">
+  .wrap {
+    border: 2px solid blue;
+    overflow: auto;
+  }
+  .child {
+    width: 200px;
+    height: 200px;
+    background: red;
+    float: left;
+  }
+</style>
+<body>
+  <div class="wrap">
+    <div class="child"></div>
+  </div>
+</body>
+```
+
+![边距重叠-8](http://qiniu.cdn.cl8023.com/BFC/BFC-8.jpg)
+
+## BFC 有什么用？
+1. 防止垂直 margin 重叠 【布局规则 2】
+2. 自适应两栏布局       【布局规则 4】
+3. 清除内部浮动         【布局规则 6】
