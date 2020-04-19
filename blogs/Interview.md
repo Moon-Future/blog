@@ -95,14 +95,14 @@ let args = Array.prototype.slice.call(arguments)
 ##### 判断变量类型
 
 ```js
-function getType(arg) {
+function type(arg) {
     return Object.prototype.toString.call(arg).slice(8, -1)
 }
-console.log(getType('a'))   // String
-console.log(getType(1))     // Number
-console.log(getType({}))    // Object
-console.log(getType([]))    // Array
-console.log(getType(null))  // Null
+console.log(type('a'))   // String
+console.log(type(1))     // Number
+console.log(type({}))    // Object
+console.log(type([]))    // Array
+console.log(type(null))  // Null
 ```
 
 ##### 继承
@@ -178,6 +178,15 @@ fn(1,2,3)
 图片预先加载到浏览器中，访问者便可顺利地在网站上冲浪，并享受到极快的加载速度。这对图片画廊及图片占据很大比例的网站来说十分有利，它保证了图片快速、无缝地发布，也可帮助用户在浏览网站内容时获得更好的用户体验。
 
 ### 5、0.1 + 0.2 !== 0.3 Why？
+
+#### 嗯~ o(*￣▽￣*)o
+- 计算机内部的信息都是由二进制方式表示的
+- 某些浮点数没办法用二进制准确的表示出来，可能会出现无限循环的情况
+- 0.1 和 0.2 转换成二进制后会无限循环，在 JavaScript 中遵循 IEEE 754 标准，通过 64 位来表示一个数字，因此会将转换后多余的位数截掉，精度已损失
+
+#### 十进制转化位二进制
+
+
 ### 6、说说你对 Event Loop 的理解
 ### 7、谈谈你对原型链的理解
 ### 8、如何实现继承？
