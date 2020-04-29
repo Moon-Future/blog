@@ -7,24 +7,25 @@
 <body>
   
   <script>
-    Function.prototype.myCall = function(context, ...args) {
-      context = context || window
-      context._fn_ = this
-      let result = context._fn_(...args)
-      console.log(args, ...args)
-      delete context._fn_
-      return result
+    function objectFactory() {
+      var obj = Object.create(Object.prototype);
+      var constructor = Array.prototype.shift.call(arguments);
+      obj._proto_ = constructor.prototype;
+      var result = constructor.apply(obj, arguments);
+      return typeof result === 'object' ? result : obj;
     }
-
-    function fn(name, age) {
-      console.log(this.value, name, age)
+    
+    var foo = function(age) {
+      this.a = 1;
+      this.b = 2;
+      this.age = age;
     }
-
-    const obj = {
-      value: 'CL'
+    foo.prototype.sayName = function() {
+      console.log(this.a)
     }
-
-    fn.myCall(obj, 2, 'adsd')
+    
+    var bar = objectFactory(foo)
+    console.log(bar)
   </script>
 </body>
 </html>
