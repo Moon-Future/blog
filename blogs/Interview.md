@@ -301,9 +301,34 @@ HTTP 协议是超文本传输协议的缩写，英文是 Hyper Text Transfer Pro
 
 ### 3、说说 TCP 三次握手过程
 
-1. **第一次握手**：建立连接时，客户端发送 SYN 包（seq=x）到服务器，并进入 SYN_SEND 状态， 等待服务器确认。（SYN：同步序列编号，Synchronize Sequence Numbers）；
-2. **第二次握手**：服务器收到 SYN 包，必须确认客户的 SYN（ack=x+1），同时自己也发送一个 SYN 包（seq=y），即 SYN + ACK 包，此时服务器进入 SYN_RECV 状态；
+1. **第一次握手**：建立连接时，客户端发送 SYN 包（seq=x）到服务器，并进入 SYN_SENT 状态， 等待服务器确认。（SYN：同步序列编号，Synchronize Sequence Numbers）；
+2. **第二次握手**：服务器收到 SYN 包，必须确认客户的 SYN（ack=x+1），同时自己也发送一个 SYN 包（seq=y），即 SYN + ACK 包，此时服务器进入 SYN_RECEVED 状态；
 3. **第三次握手**：客户端收到服务器的 SYN + ACK 包，向服务器发送确认包 ACK（ack=y+1），此包发送完毕，客户端和服务器端进入 ESTABLISHED（TCP 连接成功）状态，完成三次握手。
+
+**TCP 3-Way Handshake (SYN, SYN-ACK,ACK)**，TCP 三次握手流程图
+
+![tcp-3-way-handshake](http://qiniu.cdn.cl8023.com/HTTP/tcp-3-way-handshake.jpg)
+
+**TCP Header**  
+
+![TCP-Header-Format](http://qiniu.cdn.cl8023.com/HTTP/TCP-Header-Format.png)
+
+TCP 有6中标志位：
+- SYN（synchronous 建立连接）
+- ACK（acknowledgement 确认）
+- PSH（push 传送）
+- FIN（finish 结束）
+- RST（reset 重置）
+- URG（urgent 紧急）
+
+另外数据包：
+- Sequence number（顺序号码）
+- Acknowledge number（确认号码）
+
+1. 第一次握手中 **SYN = 1**，代表客户端 Client 要建立连接，同时随机产生 **seq（Sequence number）= x** 的数据包，然后传输到 Server；
+2. Server 收到 Client 的信息，通过 *SYN = 1* 知道是要建立连接，然后向 Client 发送信息，**ACK = 1** 代表确认，**ack（Acknowledge number）= x + 1**，**SYN = 1** 代表建立连接，随机产生 **seq = y** 的数据包；
+3. Clien 收到 Server 的信息，通过 *SYN = 1* 知道是要建立连接，然后检查 ack 是否正确，即第一次发送的 seq + 1，同时检查 ACK 是否为 1，若正确，Client 再发送 **ack = y + 1**，**ACK = 1** 到 Server，Server 收到确认 seq 值和 ACK = 1 后则连接建立成功。
+
 
 ### 4、为什么 TCP 连接要进行三次握手而不是两次握手？
 
