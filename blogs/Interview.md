@@ -375,14 +375,39 @@ Request Header 中 Connection 属性决定了连接是否持久，HTTP/1.0 中 C
 > The technique was superseded by multiplexing via HTTP/2, which is supported by most modern browsers.  
 > As of 2018, HTTP pipelining is not enabled by default in modern browsers, due to several issues including buggy proxy servers and HOL blocking.
 
+在 HTTP/1.1 时代，浏览器提高页面加载效率主要通过下面两点：  
+- 维持和服务器已经建立的 TCP 连接，在同一连接上顺序处理多个请求。
+- 和服务器建立多个 TCP 连接。
+
 ### 9、浏览器对同一 Host 建立 TCP 连接到数量有没有限制？
 
 有，Chrome 最多允许对同一个 Host 建立六个 TPC 连接，不用的浏览器有一些不同。
 
+### 10、TCP 与 UDP 有什么区别？
 
+1. 连接与无连接
+ - TCP 是基于连接的传输方式，发送数据之前需要先建立连接；
+ - UDP 发送数据之前不需要建立连接。
+2. 正确性与丢包
+ - TCP 传送数据可靠，无差错，不丢失，不重复，且按序到达；
+ - UDP 不保证传送数据可靠，尽最大努力交付。
+3. 流模式与数据报模式
+ - TCP 面向字节流，TC P把数据看成一连串无结构的字节流；
+ - UDP 面向报文，没有拥塞控制，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如 IP 电话，实时视频会议等）。
+4. 点到点及多点互联
+ - 每一条 TCP 连接只能是点到点的；
+ - UDP 支持一对一，一对多，多对一和多对多的交互通信。
+5. 资源要求多和少
+ - TCP 首部开销20字节；
+ - UDP 的首部开销小，只有8个字节。
+6. 信道可靠和不可靠
+ - TCP 的逻辑通信信道是全双工的可靠信道；
+ - UDP 则是不可靠信道。
+
+> UDP（User Datagram Protocol，用户数据包协议），是一个简单的面向数据报的通信协议，UDP 只提供数据的不可靠传递，它一旦把应用程序发给网络层的数据发送出去，就不保留数据备份
 
 ### 参考连接
-- [5 连问一个 TCP 连接可以发多少个 HTTP 请求？](https://mp.weixin.qq.com/s/pIijcXM485N54tXSk79F0Q)
+- [你猜一个 TCP 连接上面能发多少个 HTTP 请求](https://zhuanlan.zhihu.com/p/61423830?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 - [HTTP pipelining](https://en.wikipedia.org/wiki/HTTP_pipelining)
 
 ---
