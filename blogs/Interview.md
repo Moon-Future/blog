@@ -10,6 +10,8 @@
 call 和 apply 都是 Function 原型上的方法，而每一个函数作为 Function 的一个实例，可以调取原型上的 call 和 apply 方法，call 和 apply 都是用来改变函数执行时 this 的指向，唯一的区别就在于传给函数参数的时候，call 是一个个传参，apply 要求把所有参数以数组的形式传给函数。  
 call 的性能要比 apply 好那么一些（尤其是传递给函数的参数超过三个的时候），所以后期开发的时候，使用 call 多一点，并且数组参数可以基于 ES6 的展开运算符把数组中的每一项一次传递给函数。
 
+---
+
 **1. call、apply、bind的基本介绍**  
 ```js
 func.call(thisArg, arg1, arg2, ...)
@@ -156,6 +158,8 @@ fn(1,2,3)
     - 等到所有其它资源都加载完成后，我们再开始加载图片
     - 对于很多图片，需要当页面滚动的时候，当前图片区域完全显示出来后再加载真是图片
 
+---
+
 **预加载**  
 提前加载图片，当用户需要查看时可直接从本地缓存中渲染。
 
@@ -196,6 +200,8 @@ fn(1,2,3)
 盒模型有两种， W3C 标准盒模型和 IE 盒模型  
 1. W3C 标准盒模型包括 margin、border、padding、content，元素的宽度 width = content 的宽度
 2. IE 盒模型与 W3C 盒模型的唯一区别就是元素的宽度，元素的宽度 width = border + padding + content
+
+---
 
 **1. 什么是盒模型？**  
 每个元素被表示为一个矩形的盒子，由四部分组成：内容（content）、内边距（padding）、边框（border）、外边距（margin）。它在页面中所占的实际大小（宽高）是 content + padding + border + margin 之和。
@@ -253,6 +259,8 @@ BFC 称为块级格式化上下文，是 CSS 中的一种渲染机制。是一�
 
 如果一个元素具有 BFC，那么无论内部元素如何翻江倒海，它们都不会影响外部元素。因此，BFC 元素不可能有边距重叠，因为边距重叠会影响外部元素。BFC 元素也可以用于清除浮动的影响，因为如果不清除它们，子元素的浮动将导致父元素的高度崩溃，这将不可避免地影响后续元素的布局和位置，这很明显与 BFC 元素的子元素不会影响外部元素设置的事实相反。
 
+---
+
 **1. 如何触发 BFC？** 
 只要元素满足下面任一条件即可触发 BFC 特性：
 - body 根元素 (html)
@@ -305,6 +313,8 @@ HTTP 协议是超文本传输协议的缩写，英文是 Hyper Text Transfer Pro
 2. **第二次握手**：服务器收到 SYN 包，必须确认客户的 SYN（ack=x+1），同时自己也发送一个 SYN 包（seq=y），即 SYN + ACK 包，此时服务器进入 SYN_RECEVED 状态；
 3. **第三次握手**：客户端收到服务器的 SYN + ACK 包，向服务器发送确认包 ACK（ack=y+1），此包发送完毕，客户端和服务器端进入 ESTABLISHED（TCP 连接成功）状态，完成三次握手。
 
+---
+
 **TCP 3-Way Handshake (SYN, SYN-ACK,ACK)**，TCP 三次握手流程图
 
 ![tcp-3-way-handshake](http://qiniu.cdn.cl8023.com/HTTP/tcp-3-way-handshake.jpg)
@@ -329,25 +339,70 @@ TCP 有6中标志位：
 2. Server 收到 Client 的信息，通过 *SYN = 1* 知道是要建立连接，然后向 Client 发送信息，**ACK = 1** 代表确认，**ack（Acknowledge number）= x + 1**，**SYN = 1** 代表建立连接，随机产生 **seq = y** 的数据包；
 3. Clien 收到 Server 的信息，通过 *SYN = 1* 知道是要建立连接，然后检查 ack 是否正确，即第一次发送的 seq + 1，同时检查 ACK 是否为 1，若正确，Client 再发送 **ack = y + 1**，**ACK = 1** 到 Server，Server 收到确认 seq 值和 ACK = 1 后则连接建立成功。
 
-
 ### 4、为什么 TCP 连接要进行三次握手而不是两次握手？
 
+防止服务器端的一直等待而浪费资源。
+
+> 理解：假设 client 发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，以致延误到连接释放以后的某个时间才到达 server。本来这是一个早已失效的报文段。但 server 收到此失效的连接请求报文段后，就误认为是 client 再次发出的一个新的连接请求。于是就向 client 发出确认报文段，同意建立连接。假设不采用“三次握手”，那么只要 server 发出确认，新的连接就建立了。由于现在 client 并没有发出建立连接的请求，因此不会理睬 server 的确认，也不会向 server 发送数据。但 server 却以为新的传输连接已经建立，并一直等待 client 发来数据。这样，server 的很多资源就白白浪费掉了。采用“三次握手”的办法可以防止上述现象发生。例如刚才那种情况，client 不会向 server 的确认发出确认。server 由于收不到确认，就知道 client 并没有要求建立连接。”
+
+> 为了保证服务端能收接受到客户端的信息并能做出正确的应答而进行前两次（第一次和第二次）握手，为了保证客户端能够接收到服务端的信息并能做出正确的应答而进行后两次（第二次和第三次）握手。
 
 
 
+### 5、TCP 四次挥手过程，为什么要四次挥手？
 
 
 
+### 6、浏览器在与服务器建立了一个 TCP 连接后是否会在一个 HTTP 请求完成后断开？什么情况下会断开？
+
+Request Header 中 Connection 属性决定了连接是否持久，HTTP/1.0 中 Connection 默认是 close 的，即每次请求都会重新建立和断开 TCP 连接，而在 HTTP/1.1 中 Connection 默认是 keep-alive 的，即连接可以复用，不用每次都重新建立和断开 TCP 连接。如果想主动断开连接，只需要将 Connection 属性设置为 close 即可，即 Connection: close。一般情况下复用的 TCP 连接在等待设置的超时时间之后还没有被任何连接使用的话，TCP 连接就会主动断开。
+
+### 7、一个 TCP 连接能发几个 HTTP 请求？
+
+- HTTP/1.0 中 Connection 默认是 close 的，即每次请求都会重新建立和断开 TCP 连接，因此一个 TCP 连接只能发1个 HTTP 请求
+- HTTP/1.1 中 Connection 默认是 keep-alive 的，即连接可以复用，不用每次都重新建立和断开 TCP 连接，因此只要 TCP 连接不断开，便可以一直发送 HTTP 请求，持续不断，没有上限
+- HTTP 2.0 支持多路复用，一个 TCP 连接是可以并发多个 HTTP 请求，同样也是支持长连接，因此只要不断开 TCP 的连接，HTTP 请求数也是可以没有上限地持续发送
+
+### 8、一个 TCP 连接中 HTTP 请求发送可以一起发送么（比如一起发三个请求，再三个响应一起接收）？
+
+- HTTP/1.0 一个 TCP 连接只能发1个 HTTP 请求，因此不可以
+- HTTP/1.1 在同一时刻只能处理一个请求，即两个请求的生命周期不能重叠，任意两个 HTTP 请求从开始到结束的时间在同一个 TCP 连接里不能重叠，收到请求的服务器必须按照请求收到的顺序发送响应。**通过 Pipelining 技术可以实现一个 TCP 连接发送多个 HTTP 请求，但是由于浏览器默认关闭，因此可以认为这是不可行的**
+- HTTP/2.0 提供了 Multiplexing 多路传输特性，可以在一个 TCP 连接中同时完成多个 HTTP 请求
+
+> 在 HTTP/1.1 存在 Pipelining 技术可以完成这个多个请求同时发送，但是由于浏览器默认关闭，所以可以认为这是不可行的
+
+> HTTP pipelining is a technique in which multiple HTTP requests are sent on a single TCP (transmission control protocol) connection without waiting for the corresponding responses.  
+> The technique was superseded by multiplexing via HTTP/2, which is supported by most modern browsers.  
+> As of 2018, HTTP pipelining is not enabled by default in modern browsers, due to several issues including buggy proxy servers and HOL blocking.
+
+### 9、浏览器对同一 Host 建立 TCP 连接到数量有没有限制？
+
+有，Chrome 最多允许对同一个 Host 建立六个 TPC 连接，不用的浏览器有一些不同。
 
 
+
+### 参考连接
+- [5 连问一个 TCP 连接可以发多少个 HTTP 请求？](https://mp.weixin.qq.com/s/pIijcXM485N54tXSk79F0Q)
+- [HTTP pipelining](https://en.wikipedia.org/wiki/HTTP_pipelining)
+
+---
 
 1.tcp三次握手的原理和过程，tcp与udp有什么区别
+
 2.http和https有什么区别，加密方式是什么，传输原理是什么
+
 3.防抖和节流有什么用，一般的使用场景，原理是什么
+
 4.手写判断一个字符串是不是回文字符串，如果能使用js中的方法，你会使用哪一个方法
+
 5.跨域是什么？怎么解决跨域？
+
 6.状态码都有哪些？304是指什么意思
+
 7.浏览器的缓存机制是什么，怎么实现缓存，怎么想让特定文件进行缓存
+
 8.函数和对象的区别是什么
+
 9.redux是什么，为什么要使用redux，工作原理是什么
+
 10.js中的事件循环是什么原理
