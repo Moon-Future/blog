@@ -347,8 +347,6 @@ TCP 有6中标志位：
 
 > 为了保证服务端能收接受到客户端的信息并能做出正确的应答而进行前两次（第一次和第二次）握手，为了保证客户端能够接收到服务端的信息并能做出正确的应答而进行后两次（第二次和第三次）握手。
 
-
-
 ### 5、TCP 四次挥手过程，为什么要四次挥手？
 
 
@@ -406,13 +404,29 @@ Request Header 中 Connection 属性决定了连接是否持久，HTTP/1.0 中 C
 
 > UDP（User Datagram Protocol，用户数据包协议），是一个简单的面向数据报的通信协议，UDP 只提供数据的不可靠传递，它一旦把应用程序发给网络层的数据发送出去，就不保留数据备份
 
+### 11、HTTP 和 HTTPS 有什么区别，加密方式是什么，传输原理是什么
+
+区别：  
+1. 是否免费
+ - HTTPS 协议需要到 CA（证书颁发机构，Certificate Authority）申请证书，一般免费证书较少，因而需要一定费用；
+ - HTTP 一般是免费的。
+2. 安全性
+ - HTTP 是超文本传输协议，信息是明文传输；
+ - HTTPS 则是具有安全性的 SSL 加密传输协议。
+3. 连接方式与复杂度
+ - HTTP 的连接很简单，是无状态的；
+ - HTTPS 协议是 SSL + HTTP 协议构建的可进行加密传输、身份认证的网络协议，比 HTTP 协议安全。
+4. 端口不同
+ - HTTP 使用的端口号是 80；
+ - HTTPS 使用的端口号是 443。
+
+HTTPS 的加密方式
+
 ### 参考连接
 - [你猜一个 TCP 连接上面能发多少个 HTTP 请求](https://zhuanlan.zhihu.com/p/61423830?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 - [HTTP pipelining](https://en.wikipedia.org/wiki/HTTP_pipelining)
 
 ---
-
-1.tcp三次握手的原理和过程，tcp与udp有什么区别
 
 2.http和https有什么区别，加密方式是什么，传输原理是什么
 
