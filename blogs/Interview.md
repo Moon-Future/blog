@@ -404,7 +404,7 @@ Request Header 中 Connection 属性决定了连接是否持久，HTTP/1.0 中 C
 
 > UDP（User Datagram Protocol，用户数据包协议），是一个简单的面向数据报的通信协议，UDP 只提供数据的不可靠传递，它一旦把应用程序发给网络层的数据发送出去，就不保留数据备份
 
-### 11、HTTP 和 HTTPS 有什么区别，加密方式是什么，传输原理是什么
+### 11、HTTP 和 HTTPS 有什么区别？
 
 区别：  
 1. 是否免费
@@ -419,8 +419,6 @@ Request Header 中 Connection 属性决定了连接是否持久，HTTP/1.0 中 C
 4. 端口不同
  - HTTP 使用的端口号是 80；
  - HTTPS 使用的端口号是 443。
-
-HTTPS 的加密方式
 
 ### 参考连接
 - [你猜一个 TCP 连接上面能发多少个 HTTP 请求](https://zhuanlan.zhihu.com/p/61423830?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
