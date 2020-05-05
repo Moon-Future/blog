@@ -497,6 +497,17 @@ HTTPS 的加密方式：**对称加密** + **非对称加密** + **证书**。
 - **header 压缩**， HTTP1.x 的 header 带有大量信息，而且每次都要重复发送，HTTP2.0 使用 encoder 来减少需要传输的 header 大小，通讯双方各自 cache 一份 header fields 表，既避免了重复 header 的传输，又减小了需要传输的大小。
 - **服务端推送**（server push），例如我的网页有一个 sytle.css 的请求，在客户端收到 sytle.css 数据的同时，服务端会将 sytle.js 的文件推送给客户端，当客户端再次尝试获取 sytle.js 时就可以直接从缓存中获取到，不用再发请求了。
 
+### 15、浏览器的缓存机制是什么，怎么实现缓存？
+
+良好的缓存策略可以降低资源的重复加载提高网页的整体加载速度。  
+通常浏览器缓存策略分为两种：强缓存和协商缓存。  
+
+1. 浏览器发送请求前，根据请求头的 expires 和 cache-control 判断是否命中（包括是否过期）强缓存策略，如果命中，直接从缓存获取资源，并不会发送请求。如果没有命中，则进入下一步。 
+2. 没有命中强缓存规则，浏览器会发送请求，根据请求头的 last-modified 和 etag 判断是否命中协商缓存，如果命中，直接从缓存获取资源。如果没有命中，则进入下一步。 
+3. 如果前两步都没有命中，则直接从服务端获取资源。
+
+[浏览器缓存机制：强缓存、协商缓存](https://github.com/amandakelake/blog/issues/41)
+
 ### 参考连接
 - [你猜一个 TCP 连接上面能发多少个 HTTP 请求](https://zhuanlan.zhihu.com/p/61423830?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 - [HTTP pipelining](https://en.wikipedia.org/wiki/HTTP_pipelining)
@@ -512,12 +523,8 @@ HTTPS 的加密方式：**对称加密** + **非对称加密** + **证书**。
 
 5.跨域是什么？怎么解决跨域？
 
-6.状态码都有哪些？304是指什么意思
-
 7.浏览器的缓存机制是什么，怎么实现缓存，怎么想让特定文件进行缓存
 
 8.函数和对象的区别是什么
-
-9.redux是什么，为什么要使用redux，工作原理是什么
 
 10.js中的事件循环是什么原理
