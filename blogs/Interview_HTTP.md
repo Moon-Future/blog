@@ -216,6 +216,18 @@ HTTPS 的加密方式：**对称加密** + **非对称加密** + **证书**。
 
 [浏览器缓存机制：强缓存、协商缓存](https://github.com/amandakelake/blog/issues/41)
 
+
+## 16、HTTP 和 TCP 的不同
+
+- HTTP 的责任是去定义数据，在两台计算机相互传递信息时，HTTP 规定了每段数据以什么形式表达才是能够被另外一台计算机理解
+- TCP 规定的是数据应该怎么传输才能稳定且高效的传递于计算机之前
+
+
+## 17、从输入 URL 到页面的呈现，中间经历了什么？
+
+
+
+
 ### 参考连接
 - [你猜一个 TCP 连接上面能发多少个 HTTP 请求](https://zhuanlan.zhihu.com/p/61423830?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
 - [HTTP pipelining](https://en.wikipedia.org/wiki/HTTP_pipelining)

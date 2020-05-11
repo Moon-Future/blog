@@ -16,3 +16,13 @@
 | Gecko   | Firefox | -moz- |
 | Presto  | Opera   | -o- |
 | Webkit  | Chrome、Safri | -webkit- |
+
+
+## 2、介绍下重绘和回流（Repaint & Reflow），以及如何进行优化
+
+- **重绘**：由于某些元素需要更新属性，而这些属性只是影响元素的外观、风格，而不影响布局，这个过程称为重绘
+- **回流**：由于元素的规模尺寸、布局、显示/隐藏等改变而需要重新构建，这个过程称为回流
+- **回流一定会触发重绘，而重绘不一定会回流**
+
+[重绘和回流](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/24)
+

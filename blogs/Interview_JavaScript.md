@@ -213,6 +213,70 @@ Promise 对象有以下两个特点：
 
 ### Promise 可以取消吗？Axios 呢？
 
+## 7、typeof 和 instanceof 的区别
+
+- typeof 表示对某个变量类型的检测，基本数据类型除了 null 外都能正常的显示为对于的类型，引用类型除了函数会显示 'function'，其他都显示为 'object'
+- instanceof 主要是用于某个构造函数的原型对象是否在某个对象的原型链上
+
+### 为什么 typeof null === "objcet"
+
+这是 JavaScript 存在的一个悠久 Bug。在 JS 的最初版本中使用的是 32 的系统，为了性能考虑使用低位存储变量的数据类型信息，000 开头的代表是对象，而 null 表示全零，所以将它错误的判断成 object。
+
+### instanceof 实现
+
+```js
+function myInstanceof(left, right) {
+    let proto = Object.getPrototypeOf(left)
+    while(true) {
+        if (proto === null) return false
+        if (proto === right.prototype) return true
+        proto = Object.getPrototypeOf(proto)
+    }
+}
+```
+
+
+## 8、介绍一下模块化发展历程
+
+模块化主要是用来抽离公共代码，隔离作用域，避免变量冲突等。
+
+- **IIFE**（Immediately Invoked Function Expression，立即执行函数表达式）：使用自执行函数来编写模块化，特点：**在一个单独的函数作用域中执行代码，避免变量冲突**。
+    ```js
+        (function(){
+            return {
+                data:[]
+            }
+        })()
+    ```
+- **AMD**（Asynchronous Module Definition，异步模块定义）： 使用 requireJS 来编写模块化，特点：**依赖必须提前声明好**。
+    ```js
+        define('./index.js', function(code){
+            // code 就是 index.js 返回的内容
+        })
+    ```
+- **CMD**（Common Module Definition，通用模块定义）：使用 seaJS 来编写模块化，特点：**支持动态引入依赖文件**。
+    ```js
+        define(function(require, exports, module) {  
+            var indexCode = require('./index.js');
+        });
+    ```
+- **CommonJS**（同步加载模块）： nodejs 中自带的模块化。
+    ```js
+        var fs = require('fs');
+    ```
+- **ES Modules**：ES6 引入的模块化，支持 import 来引入另一个 js。
+    ```js
+        import a from 'a';
+    ```
+
+### CommonJS 和 ES6 Modules 有什么区别？
+- CommonJS 模块是运行时加载；ES6 Modules 是编译时输入接口
+- CommonJS 输出的是值的拷贝；ES6 Modules 输出的是值的引用，被输出模块的内部的改变会影响引用的改变
+- CommonJS 导入的模块路径可以是一个表达式，因为它使用的是 require() 方法；而 ES6 Modules 只能是字符串
+- CommonJS this 指向当前模块；ES6 Modules this 指向 undefined
+- ES6 Modules 中没有这些顶层变量：arguments、require、module、exports、__filename、__dirname
+
+
 ## 参考链接
 
 [霖呆呆的近期面试128题汇总](https://juejin.im/post/5eb55ceb6fb9a0436748297d?utm_source=gold_browser_extension#heading-2)
