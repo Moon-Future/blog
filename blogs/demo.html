@@ -2,30 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Blog Demo</title>
 </head>
 <body>
   
-  <script>
-    function objectFactory() {
-      var obj = Object.create(Object.prototype);
-      var constructor = Array.prototype.shift.call(arguments);
-      obj._proto_ = constructor.prototype;
-      var result = constructor.apply(obj, arguments);
-      return typeof result === 'object' ? result : obj;
-    }
-    
-    var foo = function(age) {
-      this.a = 1;
-      this.b = 2;
-      this.age = age;
-    }
-    foo.prototype.sayName = function() {
-      console.log(this.a)
-    }
-    
-    var bar = objectFactory(foo)
-    console.log(bar)
-  </script>
+  
+  <script src="./demo.js"></script>
 </body>
 </html>
