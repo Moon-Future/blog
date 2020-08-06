@@ -7,6 +7,8 @@ git config --global user.name "Your Name"
 git config --global user.email "email@example.com"
 ```
 
+
+
 ## 本地 Git 仓库和 GitHub 仓库连接
 
 第1步：创建 SSH Key。在用户主目录下，看看有没有 .ssh 目录，如果有，再看看这个目录下有没有 id_rsa 和 id_rsa.pub 这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开 Shell（Windows 下打开 Git Bash），创建 SSH Key：
@@ -20,6 +22,8 @@ ssh-keygen -t rsa -C "youremail@example.com"
 如果一切顺利的话，可以在用户主目录里找到 .ssh 目录，里面有 id_rsa 和 id_rsa.pub 两个文件，这两个就是 SSH Key 的秘钥对，id_rsa 是私钥，不能泄露出去，id_rsa.pub 是公钥，可以放心地告诉任何人。
 
 第2步：登陆 GitHub，打开“Account settings”，“SSH Keys”页面，然后点“Add SSH Key”，填上任意Title，在 Key 文本框里粘贴 id_rsa.pub 文件的内容：
+
+
 
 ## 仓库初始化
 
@@ -103,6 +107,8 @@ origin  git@github.com:Moon-Future/learngit.git (push)
 
 不过不推荐这样做，最好还是单个提交。
 
+
+
 ## Git 常用命令
 
 ![image-20200805173942961](..\images\git\git-bin.png)
@@ -120,3 +126,45 @@ git reflog 可以查看所有分支的所有操作记录（包括已经被删除
 ### git config
 
 查看 git 全局配置 `git config --global --list`
+
+### git stash
+
+> 把所有未提交的修改（包括暂存的和非暂存的）都保存起来，用于后续恢复当前工作目录。
+
+当你使用 git 正在开发一个功能的时候，如果你突然需要到另一个分支去开发却不想放弃当前的改动的时候，你可以：
+
+- 先将代码 commit，切换分支修改完毕，再次切换回原分支，利用 amend 命令，取消 commit，版本回退，记录重新回复。
+- 利用 git stash 命令，先将数据存到缓存，切换分支修改完毕，切换原分支，利用 git stash apply 命令将缓存数据恢复。
+
+常用命令：
+
+1. **`git stash save "说明"`**，这是主要的存储命令，其实可以不写 save 参数，直接 git stash 就可以，save 参数是为了加一个文字说明。实际应用中推荐给每个 stash 加一个 message，用于记录版本，使用 git stash save 取代 git stash 命令。
+2. **`git stash list`**，列出所有储藏
+3. **`git stash show [<stash>:Number]`**，显示某一个（默认最近一个）储藏详情
+4. **`git stash drop [-q|--quiet][<stash>]`**，删除某一个（默认最近一个）储藏，`git stash pop stash@{0}`，`git stash pop stash@{1}`
+5. **`git stash apply`**，应用某个存储，但不会把存储从存储列表中删除，默认使用第一个存储，即 stash@{0}，如果要使用其他个，git stash apply stash@{$num} ， 比如第二个：git stash apply stash@{1}
+6. **`git stash pop`**，恢复之前缓存的工作目录，将缓存堆栈中的对应 stash 删除，并将对应修改应用到当前的工作目录下，默认为第一个 stash，即 stash@{0}，如果要应用并删除其他 stash，命令：git stash pop stash@{$num} ，比如应用并删除第二个：git stash pop stash@{1}
+7. **`git stash clear`**，删除所有缓存的 stash
+
+与 commit 区别：
+
+- commit 提交，可以推送到远程仓库
+- stash 变更状态的缓存，不能推送到远程仓库
+
+### git status
+
+### git diff
+
+### git checkout
+
+### git pull
+
+### git fetch
+
+### git merge
+
+### git reset
+
+
+
+## git 工作流
