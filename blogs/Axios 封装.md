@@ -1,3 +1,7 @@
+## axios 封装
+
+### http.js
+
 ```js
 import store from '@/store/index'
 import axios from 'axios'
@@ -46,10 +50,10 @@ const errorHandle = (status, message) => {
     case 403:
       tip('登录过期，请重新登录', 'error')
       localStorage.removeItem('token')
-      store.commit('SET_USERINFO', { status: false })
-      setTimeout(() => {
-        toLogin()
-      }, 1000)
+      // store.commit('loginSuccess', null)
+      // setTimeout(() => {
+      //   toLogin()
+      // }, 1000)
       break
     // 404 请求不存在
     case 404:
@@ -64,10 +68,24 @@ const errorHandle = (status, message) => {
 }
 
 let instance = axios.create({ timeout: 1000 * 12 })
+let CancelToken = axios.CancelToken
+let pending = {}
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
+function removePending(key, isRequest = false) {
+  if (pending[key] && isRequest) {
+    pending[key]('取消重复请求')
+  }
+  delete pending[key]
+}
 
 instance.interceptors.request.use(
   config => {
+    // 取消重复请求
+    removePending(config.url + '&' + config.method, true)
+    config.cancelToken = new CancelToken(c => {
+      pending[config.url + '&' + config.method] = c
+    })
     // 每次发送请求之前判断 vuex 中是否存在 token
     // 如果存在，则统一在 http 请求的 header 都加上 token，这样后台根据 token 判断你的登录情况
     // 即使本地存在 token，也有可能 token 是过期的，所以在响应拦截器中要对返回状态进行判断
@@ -82,6 +100,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   res => {
+    removePending(res.config.url + '&' + res.config.method)
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
     if (res.status === 200) {
@@ -98,6 +117,7 @@ instance.interceptors.response.use(
   error => {
     const { response } = error
     if (response) {
+      removePending(response.config.url + '&' + response.config.method)
       // 请求已发出，但是不在2xx的范围
       errorHandle(response.status, response.data.message)
       return Promise.reject(response)
@@ -114,3 +134,35 @@ instance.interceptors.response.use(
 export default instance
 ```
 
+### api.js
+
+```js
+import http from './http'
+
+export const URL = {
+  // 用户
+  register: '/api/user/register', // 用户注册
+  login: '/api/user/login' // 用户登陆
+}
+
+const API = {
+  /**
+   * 用户注册
+   * @param {Object} data {username, password, rePassword, nickname, emailCode} 用户名 密码 重复密码 昵称 邮箱验证码
+   */
+  register(data) {
+    return http.post(URL.register, data)
+  },
+
+  /**
+   * 用户登陆
+   * @param {String} username 用户名
+   * @param {String} password 密码
+   */
+  login(username, password) {
+    return http.post(URL.login, { username, password })
+  }
+}
+
+export default API
+```
